@@ -1,0 +1,20 @@
+[package]
+name = "engine-visibility"
+description = "Projet S: predictive interest management (server-side anti-wallhack culling)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+
+[dependencies]
+engine-physics.workspace = true
+glam.workspace = true
+serde.workspace = true
+
+[dev-dependencies]
+engine-core.workspace = true
+
+[lints]
+workspace = true
