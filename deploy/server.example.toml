@@ -1,0 +1,18 @@
+# Projet S — example dedicated server configuration.
+# Copy to server.toml and adjust. Every key is optional (defaults shown).
+# Secrets never go here: the admin token comes from PROJET_S_ADMIN_TOKEN.
+
+name = "Projet S"
+bind = "0.0.0.0:27015"          # UDP game port
+admin_bind = "127.0.0.1:27016"  # HTTP admin API; keep it on loopback or a private network
+map = "ps_citadel"              # ps_citadel, ps_duel_lab, ps_training_lab
+profile = "competitive"         # see configs/rules.toml: competitive, deathmatch, duel, training…
+tick_rate = 128
+snapshot_divider = 1            # 1 = a snapshot every tick
+max_clients = 16
+bots = 0
+bot_difficulty = 0.5            # 0 to 1
+fill_with_bots = false          # complete both teams with bots
+motd = "Bienvenue sur Projet S (alpha)"
+# replay_dir = "/var/lib/projet-s/replays"
+# seed = 7                      # reproducible runs (tests only)

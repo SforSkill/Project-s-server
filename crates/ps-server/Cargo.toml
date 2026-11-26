@@ -1,0 +1,43 @@
+[package]
+name = "game-server"
+description = "Projet S: authoritative 128 Hz dedicated server (also embedded by the client for local play)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "projet-s-server"
+path = "src/main.rs"
+required-features = ["admin"]
+
+[features]
+default = ["admin"]
+# HTTP admin API and Prometheus metrics (dedicated server only).
+admin = ["dep:axum", "dep:tokio", "dep:prometheus-client", "dep:serde_json", "dep:ctrlc", "dep:tracing-subscriber"]
+
+[dependencies]
+engine-core.workspace = true
+engine-physics.workspace = true
+engine-network.workspace = true
+engine-visibility.workspace = true
+engine-hitreg.workspace = true
+engine-weapons.workspace = true
+game-rules.workspace = true
+game-sim.workspace = true
+glam.workspace = true
+serde.workspace = true
+toml.workspace = true
+tracing.workspace = true
+getrandom.workspace = true
+axum = { workspace = true, optional = true }
+tokio = { workspace = true, optional = true }
+prometheus-client = { workspace = true, optional = true }
+serde_json = { workspace = true, optional = true }
+ctrlc = { workspace = true, optional = true }
+tracing-subscriber = { workspace = true, optional = true }
+
+[lints]
+workspace = true

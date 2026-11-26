@@ -1,0 +1,41 @@
+# /etc/systemd/system/projet-s-server.service
+# Install: see docs/deployment.md. The admin token lives in
+# /etc/projet-s/admin.env (mode 0600, root-owned, never versioned):
+#   PROJET_S_ADMIN_TOKEN=<long random value>
+[Unit]
+Description=Projet S dedicated server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+StateDirectory=projet-s
+WorkingDirectory=/opt/projet-s
+EnvironmentFile=-/etc/projet-s/admin.env
+Environment=RUST_LOG=info
+ExecStart=/opt/projet-s/projet-s-server --data /opt/projet-s --config /etc/projet-s/server.toml --replays /var/lib/projet-s/replays
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=10
+# The 128 Hz loop benefits from a little scheduling priority; no realtime class.
+Nice=-5
+# Hardening
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_INET AF_INET6
+RestrictNamespaces=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+MemoryMax=512M
+
+[Install]
+WantedBy=multi-user.target
