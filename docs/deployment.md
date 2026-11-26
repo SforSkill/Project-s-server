@@ -109,8 +109,11 @@ Depuis le client : **Rejoindre → `IP_DU_VPS:27015`**, ou
   - deux clients Windows se sont connectés en UDP et ont joué contre 4 bots,
     sans perte de snapshot ni tick en retard.
 - `--check` valide `deploy/server.example.toml`.
+- **Option 1 (systemd)** installée sur un VPS Debian 12 réel. Un client
+  Windows s'y est connecté par Internet : 0 snapshot perdu (`VALIDATION_REPORT.md`).
+  Sur ce serveur, les replays sont coupés par un override
+  (`/etc/systemd/system/projet-s-server.service.d/override.conf`, avec
+  `--replays off`) : des matchs de bots en continu écrivent environ 175 Mo
+  par jour.
 - Non vérifié :
-  - un VPS réel, sur Internet ;
-  - l'unité systemd sur une distribution réelle (le fichier est écrit, mais il
-    n'a pas été démarré) ;
   - Helm et Agones sur un cluster (seuls `helm lint` et `helm template` sont passés).
