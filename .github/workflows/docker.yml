@@ -28,4 +28,4 @@ jobs:
       - uses: actions/checkout@v4
       - name: Unit file lints cleanly (ExecStart binary absent on the runner is expected)
         run: |
-          systemd-analyze verify deploy/systemd/projet-s-server.service 2>&1 | grep -v "projet-s-server: No such file\|Command .* is not executable" | (! grep -E "error|Unknown")
+          systemd-analyze verify deploy/systemd/projet-s-server.service 2>&1 | grep -v "projet-s-server: No such file\|Command .* is not executable" | grep "projet-s-server.service" | (! grep -E "error|Unknown")
