@@ -3,18 +3,18 @@
 
 use crate::config::ServerConfig;
 use crate::stats::ServerStats;
-use engine_core::cmd::UserCmd;
-use engine_core::{MAX_PLAYERS, PlayerId, Team};
-use engine_network::{Channel, MAX_MESSAGE, ServerEndpoint, ServerEvent};
-use engine_visibility::{Target, Viewer, potentially_visible};
-use game_rules::Mode;
-use game_sim::proto::{
+use glam::Vec3;
+use ps_rules::Mode;
+use ps_sim::{BombState, Controller, GameData, GameEvent, Level, ShotReport, Sim, SimConfig};
+use ps_sim_core::cmd::UserCmd;
+use ps_sim_core::{MAX_PLAYERS, PlayerId, Team};
+use ps_sim_net::proto::{
     self, BombNet, ClientMsg, DropQ, EntityQ, GrenadeQ, PlayerInfo, SelfState, ServerMsg, ShotNet,
     SmokeNet, Snapshot, Welcome, eflags,
 };
-use game_sim::record::{Recorder, ReplayHeader, SimInput, apply};
-use game_sim::{BombState, Controller, GameData, GameEvent, Level, ShotReport, Sim, SimConfig};
-use glam::Vec3;
+use ps_sim_net::record::{Recorder, ReplayHeader, SimInput, apply};
+use ps_transport::{Channel, MAX_MESSAGE, ServerEndpoint, ServerEvent};
+use ps_visibility::{Target, Viewer, potentially_visible};
 use std::collections::{BTreeMap, HashMap, VecDeque};
 use std::fs::File;
 use std::io::BufWriter;
@@ -507,7 +507,7 @@ impl Server {
                         continue;
                     }
                     if cmd.tick > tick + MAX_CMD_AHEAD
-                        || cmd.events.len() > engine_core::cmd::MAX_EVENTS_PER_CMD
+                        || cmd.events.len() > ps_sim_core::cmd::MAX_EVENTS_PER_CMD
                     {
                         continue;
                     }
@@ -811,7 +811,7 @@ impl Server {
                     tick,
                     view_start: p.view,
                     view_end: p.view,
-                    view_time: engine_core::SimTime::new(tick, 0.0),
+                    view_time: ps_sim_core::SimTime::new(tick, 0.0),
                     ..Default::default()
                 });
             }
@@ -866,7 +866,7 @@ impl Server {
             self.send_players();
         }
         // Back to warmup some time after the end of a match.
-        if self.sim.rules.phase == game_rules::Phase::GameOver {
+        if self.sim.rules.phase == ps_rules::Phase::GameOver {
             let at = *self.ended_at.get_or_insert(now);
             if now - at > 20.0 {
                 let r = self.change_map(None, None);
@@ -895,7 +895,7 @@ impl Server {
         }
     }
 
-    fn viewer_of(&self, c: &Client) -> Option<(engine_core::PlayerId, Team)> {
+    fn viewer_of(&self, c: &Client) -> Option<(ps_sim_core::PlayerId, Team)> {
         let id = c.player?;
         let p = self.sim.player(id)?;
         if p.alive {
@@ -1115,7 +1115,7 @@ impl Server {
         }
     }
 
-    fn entity(&self, p: &game_sim::Player) -> EntityQ {
+    fn entity(&self, p: &ps_sim::Player) -> EntityQ {
         let mut f = 0u16;
         let set = |f: &mut u16, c: bool, b: u16| {
             if c {
@@ -1313,7 +1313,7 @@ impl Server {
                     };
                     let visible =
                         potentially_visible(&self.sim.level.world, &vis, &v, &t, &|a, b| {
-                            game_sim::smoke::smoke_blocks(
+                            ps_sim::smoke::smoke_blocks(
                                 &self.sim.smokes,
                                 a,
                                 b,
@@ -1438,7 +1438,7 @@ impl Server {
     }
 }
 
-fn smoke_net(s: &game_sim::SmokeVolume) -> SmokeNet {
+fn smoke_net(s: &ps_sim::SmokeVolume) -> SmokeNet {
     let mut bits = vec![0u8; s.filled.len().div_ceil(8)];
     for (i, f) in s.filled.iter().enumerate() {
         if *f {

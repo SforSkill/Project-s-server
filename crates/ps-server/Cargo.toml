@@ -1,6 +1,6 @@
 [package]
-name = "game-server"
-description = "Projet S: authoritative 128 Hz dedicated server (also embedded by the client for local play)"
+name = "ps-server"
+description = "Project S: authoritative 128 Hz dedicated server (also embedded by the client for local play)"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -19,14 +19,15 @@ default = ["admin"]
 admin = ["dep:axum", "dep:tokio", "dep:prometheus-client", "dep:serde_json", "dep:ctrlc", "dep:tracing-subscriber"]
 
 [dependencies]
-engine-core.workspace = true
-engine-physics.workspace = true
-engine-network.workspace = true
-engine-visibility.workspace = true
-engine-hitreg.workspace = true
-engine-weapons.workspace = true
-game-rules.workspace = true
-game-sim.workspace = true
+ps-sim-core.workspace = true
+ps-physics.workspace = true
+ps-transport.workspace = true
+ps-visibility.workspace = true
+ps-hitreg.workspace = true
+ps-weapons.workspace = true
+ps-rules.workspace = true
+ps-sim.workspace = true
+ps-sim-net.workspace = true
 glam.workspace = true
 serde.workspace = true
 toml.workspace = true

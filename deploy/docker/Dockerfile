@@ -1,12 +1,14 @@
-# Projet S dedicated server (Linux x86-64).
-# Build from the repository root:
-#   docker build -f deploy/docker/Dockerfile -t projet-s-server:0.1.0-alpha .
-# Only the server crate and its dependencies are compiled (no Bevy).
+# Project S dedicated server (Linux x86-64), built from the repository root:
+#   docker build -f deploy/docker/Dockerfile -t project-s-server:dev .
+# The content (configs + maps) is fetched at the version pinned in .content-version.
 
 FROM rust:1.100-slim-bookworm AS build
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates && rm -rf /var/lib/apt/lists/*
 WORKDIR /src
 COPY . .
-RUN cargo build --locked --release -p game-server --bin projet-s-server \
+RUN git clone --quiet --depth 1 --branch "$(tr -d '[:space:]' < .content-version)" \
+      https://github.com/SforSkill/Project-s-content /content \
+ && cargo build --locked --release -p ps-server --bin projet-s-server \
  && strip target/release/projet-s-server
 
 FROM debian:bookworm-slim
@@ -15,8 +17,9 @@ RUN useradd --system --uid 10001 --home-dir /opt/projet-s --shell /usr/sbin/nolo
  && chown projets /var/lib/projet-s/replays
 WORKDIR /opt/projet-s
 COPY --from=build /src/target/release/projet-s-server /opt/projet-s/projet-s-server
-COPY configs /opt/projet-s/configs
-COPY maps /opt/projet-s/maps
+COPY --from=build /content/configs /opt/projet-s/configs
+COPY --from=build /content/maps /opt/projet-s/maps
+COPY --from=build /content/manifests /opt/projet-s/manifests
 COPY deploy/server.example.toml /opt/projet-s/server.toml
 USER projets
 ENV PROJET_S_LOG_JSON=1 RUST_LOG=info

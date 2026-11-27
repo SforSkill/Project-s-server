@@ -1,0 +1,9 @@
+# Headless authoritative server: no graphics, audio, window, client code or direct database access.
+[rules."*"]
+forbid = ["bevy*", "wgpu*", "winit", "egui*", "rodio", "cpal", "alsa*", "ps-engine*", "ps-netclient", "ps-client", "sqlx*", "postgres*", "diesel*"]
+
+[rules."ps-visibility"]
+internal = ["ps-physics"]
+
+[rules."ps-server"]
+internal = ["ps-visibility", "ps-sim-core", "ps-physics", "ps-transport", "ps-hitreg", "ps-weapons", "ps-rules", "ps-sim", "ps-sim-net"]

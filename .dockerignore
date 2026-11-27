@@ -2,8 +2,8 @@ target/
 dist/
 replays/
 .git/
-**/*.psr
+Project-s-content/
+**/*.psrp
 .env
 *.pem
 *.key
-docs/results/

@@ -3,7 +3,7 @@
 use crate::config::ServerConfig;
 use crate::server::Server;
 use crate::stats::Status;
-use game_sim::GameData;
+use ps_sim::GameData;
 use std::net::{SocketAddr, UdpSocket};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc::{self, Receiver, Sender};

@@ -12,10 +12,10 @@ use axum::extract::State;
 use axum::http::{HeaderMap, StatusCode};
 use axum::response::IntoResponse;
 use axum::routing::{get, post};
-use game_server::run::ServerHandle;
-use game_server::stats::{Status, TICK_BUCKETS_MS};
-use game_server::{ServerConfig, find_data_dir, start};
-use game_sim::GameData;
+use ps_server::run::ServerHandle;
+use ps_server::stats::{Status, TICK_BUCKETS_MS};
+use ps_server::{ServerConfig, find_data_dir, start};
+use ps_sim::GameData;
 use std::fmt::Write as _;
 use std::io::BufRead;
 use std::sync::Arc;
@@ -115,7 +115,7 @@ fn run() -> Result<(), String> {
     );
     if check {
         // Builds the server without opening sockets.
-        game_server::Server::new(cfg.clone(), data)?;
+        ps_server::Server::new(cfg.clone(), data)?;
         println!(
             "configuration valide : carte {}, mode {}, {} Hz",
             cfg.map, cfg.profile, cfg.tick_rate

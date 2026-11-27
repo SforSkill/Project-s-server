@@ -1,7 +1,7 @@
 //! Server configuration (`server.toml` + command-line overrides).
 
-use engine_hitreg::LagCompPolicy;
-use engine_visibility::VisibilityConfig;
+use ps_hitreg::LagCompPolicy;
+use ps_visibility::VisibilityConfig;
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
@@ -67,7 +67,7 @@ impl ServerConfig {
     }
 
     pub fn validate(&self) -> Result<(), String> {
-        engine_core::TickRate::new(self.tick_rate)?;
+        ps_sim_core::TickRate::new(self.tick_rate)?;
         if self.snapshot_divider == 0 || self.snapshot_divider > 8 {
             return Err("snapshot_divider doit être entre 1 et 8".into());
         }

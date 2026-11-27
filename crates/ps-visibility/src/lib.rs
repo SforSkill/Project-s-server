@@ -7,8 +7,8 @@
 //! (no "pop-in"): both the viewer's eye and the target are extrapolated along
 //! their velocity, plus a margin covering the peeker's advantage.
 
-use engine_physics::CollisionWorld;
 use glam::Vec3;
+use ps_physics::CollisionWorld;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -118,13 +118,13 @@ pub fn potentially_visible(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use engine_physics::brush::Brush;
-    use engine_physics::material::MaterialId;
+    use ps_physics::brush::Brush;
+    use ps_physics::material::MaterialId;
 
     fn wall_world() -> CollisionWorld {
         // A wall between x = -32..32 along z, height 200, at z = -500 .. -484.
         let b = Brush::from_box(
-            engine_core::Aabb::new(
+            ps_sim_core::Aabb::new(
                 Vec3::new(-300.0, 0.0, -516.0),
                 Vec3::new(300.0, 200.0, -500.0),
             ),

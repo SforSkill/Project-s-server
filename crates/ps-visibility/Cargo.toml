@@ -1,6 +1,6 @@
 [package]
-name = "engine-visibility"
-description = "Projet S: predictive interest management (server-side anti-wallhack culling)"
+name = "ps-visibility"
+description = "Project S: predictive interest management (server-side anti-wallhack culling)"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -9,12 +9,12 @@ rust-version.workspace = true
 repository.workspace = true
 
 [dependencies]
-engine-physics.workspace = true
+ps-physics.workspace = true
 glam.workspace = true
 serde.workspace = true
 
 [dev-dependencies]
-engine-core.workspace = true
+ps-sim-core.workspace = true
 
 [lints]
 workspace = true

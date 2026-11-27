@@ -1,7 +1,9 @@
 # Déploiement du serveur dédié
 
 Le serveur est un binaire Linux x86-64 autonome : `projet-s-server`, avec les
-dossiers `configs/` et `maps/`. Il n'a besoin ni de GPU ni de bibliothèque
+dossiers `configs/`, `maps/` et `manifests/` de
+[Project-s-content](https://github.com/SforSkill/Project-s-content) à la version
+épinglée dans `.content-version`. L'archive des releases de ce dépôt les contient déjà. Il n'a besoin ni de GPU ni de bibliothèque
 graphique. Il consomme environ 1 cœur pour un match 5v5 à 128 Hz ; en mesure,
 un tick prend en moyenne 40 µs pour 2 clients et 4 bots (`docs/validation-report.md`).
 
@@ -49,7 +51,7 @@ perdu ; son replay est conservé jusqu'à la dernière trame complète.
 ## Option 2 — Docker
 
 ```sh
-# Depuis le dépôt
+# Depuis ce dépôt (le contenu est récupéré par le Dockerfile)
 printf "PROJET_S_ADMIN_TOKEN=%s\n" "$(openssl rand -hex 24)" > deploy/docker/.env   # non versionné
 chmod 600 deploy/docker/.env
 docker compose -f deploy/docker/compose.yaml --env-file deploy/docker/.env up -d --build
@@ -94,7 +96,7 @@ Commandes acceptées par `/command`, une ligne de 200 caractères au plus :
 - `status`.
 
 Journaux : définir `PROJET_S_LOG_JSON=1` pour des journaux JSON ; le niveau se
-règle avec `RUST_LOG`, par exemple `info` ou `game_server=debug`.
+règle avec `RUST_LOG`, par exemple `info` ou `ps_server=debug`.
 
 ## Se connecter
 

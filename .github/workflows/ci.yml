@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rust:
+    uses: SforSkill/Project-s-docs/.github/workflows/rust.yml@v0.1.0
+    with:
+      tools-ref: v0.1.0
+      content: true
+      extra: "cargo run --release --locked -p ps-server -- --data \"$PS_CONTENT_DIR\" --config deploy/server.example.toml --check"
