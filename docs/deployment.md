@@ -3,7 +3,7 @@
 Le serveur est un binaire Linux x86-64 autonome : `projet-s-server`, avec les
 dossiers `configs/` et `maps/`. Il n'a besoin ni de GPU ni de bibliothèque
 graphique. Il consomme environ 1 cœur pour un match 5v5 à 128 Hz ; en mesure,
-un tick prend en moyenne 40 µs pour 2 clients et 4 bots (`VALIDATION_REPORT.md`).
+un tick prend en moyenne 40 µs pour 2 clients et 4 bots (`docs/validation-report.md`).
 
 | Port | Protocole | Exposition |
 |---|---|---|
@@ -110,7 +110,7 @@ Depuis le client : **Rejoindre → `IP_DU_VPS:27015`**, ou
     sans perte de snapshot ni tick en retard.
 - `--check` valide `deploy/server.example.toml`.
 - **Option 1 (systemd)** installée sur un VPS Debian 12 réel. Un client
-  Windows s'y est connecté par Internet : 0 snapshot perdu (`VALIDATION_REPORT.md`).
+  Windows s'y est connecté par Internet : 0 snapshot perdu (`docs/validation-report.md`).
   Sur ce serveur, les replays sont coupés par un override
   (`/etc/systemd/system/projet-s-server.service.d/override.conf`, avec
   `--replays off`) : des matchs de bots en continu écrivent environ 175 Mo
